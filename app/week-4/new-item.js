@@ -28,11 +28,11 @@ export default function NewItem() {
                 </div>
 
                 <button onClick={increment} disabled={quantity === 20}
-                    className="flex px-4 py-2 bg-red-500 hover:bg-red-400 disabled:opacity-30 rounded-lg font-mono text-gray-300">
+                    className="flex px-4 py-2 bg-emerald-500 hover:bg-emerald-700 disabled:opacity-30 rounded-lg font-mono text-gray-300">
                     Add
                 </button>
                 <button onClick={decrement} disabled={quantity === 1}
-                    className="flex px-4 py-2 bg-red-500 hover:bg-red-400 disabled:opacity-30 rounded-lg font-mono text-gray-300">
+                    className="flex px-4 py-2 bg-emerald-500 hover:bg-emerald-700 disabled:opacity-30 rounded-lg font-mono text-gray-300">
                     Remove
                 </button>
             </div>
