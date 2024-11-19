@@ -1,13 +1,12 @@
 "use client"
 
+import { getItems, addItem } from "../_services/shopping-list-service";
 import { useUserAuth } from "../_utils/auth-context";
 import ItemList from "./item-list";
 import NewItem from "./new-item";
-import itemsData from './items.json';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MealIdeas from "./meal-ideas";
 import Link from "next/link";
-
 
 
 
@@ -24,8 +23,23 @@ export default function Page() {
         );
     }
 
-    const [items, setItems] = useState(itemsData);
+    const [items, setItems] = useState([]);
     const [selectedItemName, setSelectedItemName] = useState("");
+
+    const loadItems = async () => {
+        if (user?.uid) {
+            try {
+                const fetchedItems = await getItems(user.uid);
+                setItems(fetchedItems);
+            } catch (error) {
+                console.error("Failed to load shopping list items:", error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        loadItems();
+    }, [user]);
 
     const handleItemSelect = (item) => {
 
@@ -37,8 +51,19 @@ export default function Page() {
         setSelectedItemName(clean);
     };
 
-    const handleAddItem = (newItem) => {
-        setItems((prevItems) => [...prevItems, newItem]);
+    const handleAddItem = async (newItem) => {
+        if (user?.uid) {
+            try {
+                const newItemId = await addItem(user.uid, newItem);
+
+                setItems((prevItems) => [
+                    ...prevItems,
+                    { id: newItemId, ...newItem }
+                ]);
+            } catch (error) {
+                console.error("Failed to add item:", error);
+            }
+        }
     };
     return (
         <main className="bg-zinc-800 text-white min-h-screen p-5">
